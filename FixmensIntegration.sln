@@ -1,0 +1,23 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FixmensIntegrationApi", "FixmensIntegrationApi\FixmensIntegrationApi.csproj", "{8C18DBAC-B37C-4DA3-A88F-34F505A815A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FixmensIntegrationApi.Tests", "FixmensIntegrationApi.Tests\FixmensIntegrationApi.Tests.csproj", "{EBCF4A0D-E20D-400C-B530-01696A853421}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8C18DBAC-B37C-4DA3-A88F-34F505A815A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C18DBAC-B37C-4DA3-A88F-34F505A815A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C18DBAC-B37C-4DA3-A88F-34F505A815A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C18DBAC-B37C-4DA3-A88F-34F505A815A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBCF4A0D-E20D-400C-B530-01696A853421}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBCF4A0D-E20D-400C-B530-01696A853421}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBCF4A0D-E20D-400C-B530-01696A853421}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBCF4A0D-E20D-400C-B530-01696A853421}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
