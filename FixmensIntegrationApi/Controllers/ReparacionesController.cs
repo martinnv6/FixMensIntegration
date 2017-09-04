@@ -29,7 +29,8 @@ namespace FixmensIntegrationApi.Controllers
         // GET api/<controller>/5
         public HttpResponseMessage Get(long id)
         {
-            //Esta es una prueba de comentario para probar bitbucket
+            //Esta es una prueba de comentario para probar VS
+            //Esta es una prueba de comentario para probar Bitbucket
             try
             {
                 //UserToken token = new UserToken(User);
