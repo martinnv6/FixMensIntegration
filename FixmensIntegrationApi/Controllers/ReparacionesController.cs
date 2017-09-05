@@ -6,7 +6,6 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Web.Helpers;
 using System.Web.Http;
-using FixmensIntegrationApi.Models;
 
 namespace FixmensIntegrationApi.Controllers
 {
@@ -34,7 +33,7 @@ namespace FixmensIntegrationApi.Controllers
             try
             {
                 //UserToken token = new UserToken(User);
-                FixMensAzure model = new FixMensAzure();
+                serviceEntities model = new serviceEntities();
                 REPARACIONESVIEW result = model.REPARACIONESVIEW.FirstOrDefault(x => x.CODIGO ==id);
 
                 return Request.CreateResponse(HttpStatusCode.OK,
@@ -53,7 +52,7 @@ namespace FixmensIntegrationApi.Controllers
             try
             {
                 //UserToken token = new UserToken(User);
-                FixMensAzure model = new FixMensAzure();
+                serviceEntities model = new serviceEntities();
                 List<REPARACIONESVIEW> result = model.REPARACIONESVIEW.Where(x => x.NOMBRES.Contains(nombre)).ToList();
 
                 return Request.CreateResponse(HttpStatusCode.OK,
