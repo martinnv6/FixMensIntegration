@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="serviceModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="REPARACIONESVIEW">
+          <Key>
+            <PropertyRef Name="CODIGO" />
+          </Key>
+          <Property Name="CODIGO" Type="bigint" Nullable="false" />
+          <Property Name="EQUIPO" Type="varchar" MaxLength="50" />
+          <Property Name="NOMBRES" Type="varchar" MaxLength="100" />
+          <Property Name="FALLA" Type="varchar(max)" />
+          <Property Name="INFORMETALLER" Type="varchar(max)" />
+          <Property Name="DETALLE" Type="varchar(max)" />
+          <Property Name="PRESPUPUESTO" Type="varchar(max)" />
+          <Property Name="TECNICO" Type="varchar" MaxLength="100" />
+          <Property Name="FECHAINGRESO" Type="datetime" />
+          <Property Name="PROMETIDO" Type="datetime" />
+          <Property Name="FECHATERMINADO" Type="datetime" />
+          <Property Name="ESTADO" Type="varchar" MaxLength="50" />
+          <Property Name="FECHAUPDATE" Type="datetime" />
+          <Property Name="CELULAR" Type="varchar" MaxLength="50" />
+          <Property Name="TELEFONO" Type="varchar" MaxLength="50" />
+          <Property Name="EMAIL" Type="varchar" MaxLength="255" />
+          <Property Name="ENTREGADO" Type="bit" />
+          <Property Name="NS" Type="varchar" MaxLength="50" />
+          <Property Name="FECHAENTREGADO" Type="datetime" />
+          <Property Name="AVISADO" Type="bit" />
+          <Property Name="COLOR" Type="varchar" MaxLength="50" />
+          <Property Name="ESTADOEQUIPO" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityContainer Name="serviceModelStoreContainer">
+          <EntitySet Name="REPARACIONESVIEW" EntityType="Self.REPARACIONESVIEW" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="serviceModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="FixmensEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="REPARACIONESVIEW" EntityType="serviceModel.REPARACIONESVIEW" />
+        </EntityContainer>
+        <EntityType Name="REPARACIONESVIEW">
+          <Key>
+            <PropertyRef Name="CODIGO" />
+          </Key>
+          <Property Name="CODIGO" Type="Int64" Nullable="false" />
+          <Property Name="EQUIPO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NOMBRES" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FALLA" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="INFORMETALLER" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DETALLE" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="PRESPUPUESTO" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TECNICO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FECHAINGRESO" Type="DateTime" Precision="3" />
+          <Property Name="PROMETIDO" Type="DateTime" Precision="3" />
+          <Property Name="FECHATERMINADO" Type="DateTime" Precision="3" />
+          <Property Name="ESTADO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FECHAUPDATE" Type="DateTime" Precision="3" />
+          <Property Name="CELULAR" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TELEFONO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EMAIL" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ENTREGADO" Type="Boolean" />
+          <Property Name="NS" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FECHAENTREGADO" Type="DateTime" Precision="3" />
+          <Property Name="AVISADO" Type="Boolean" />
+          <Property Name="COLOR" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ESTADOEQUIPO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="serviceModelStoreContainer" CdmEntityContainer="FixmensEntities">
+          <EntitySetMapping Name="REPARACIONESVIEW">
+            <EntityTypeMapping TypeName="serviceModel.REPARACIONESVIEW">
+              <MappingFragment StoreEntitySet="REPARACIONESVIEW">
+                <ScalarProperty Name="ESTADOEQUIPO" ColumnName="ESTADOEQUIPO" />
+                <ScalarProperty Name="COLOR" ColumnName="COLOR" />
+                <ScalarProperty Name="AVISADO" ColumnName="AVISADO" />
+                <ScalarProperty Name="FECHAENTREGADO" ColumnName="FECHAENTREGADO" />
+                <ScalarProperty Name="NS" ColumnName="NS" />
+                <ScalarProperty Name="ENTREGADO" ColumnName="ENTREGADO" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="TELEFONO" ColumnName="TELEFONO" />
+                <ScalarProperty Name="CELULAR" ColumnName="CELULAR" />
+                <ScalarProperty Name="FECHAUPDATE" ColumnName="FECHAUPDATE" />
+                <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+                <ScalarProperty Name="FECHATERMINADO" ColumnName="FECHATERMINADO" />
+                <ScalarProperty Name="PROMETIDO" ColumnName="PROMETIDO" />
+                <ScalarProperty Name="FECHAINGRESO" ColumnName="FECHAINGRESO" />
+                <ScalarProperty Name="TECNICO" ColumnName="TECNICO" />
+                <ScalarProperty Name="PRESPUPUESTO" ColumnName="PRESPUPUESTO" />
+                <ScalarProperty Name="DETALLE" ColumnName="DETALLE" />
+                <ScalarProperty Name="INFORMETALLER" ColumnName="INFORMETALLER" />
+                <ScalarProperty Name="FALLA" ColumnName="FALLA" />
+                <ScalarProperty Name="NOMBRES" ColumnName="NOMBRES" />
+                <ScalarProperty Name="EQUIPO" ColumnName="EQUIPO" />
+                <ScalarProperty Name="CODIGO" ColumnName="CODIGO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

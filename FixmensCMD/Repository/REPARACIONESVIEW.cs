@@ -40,5 +40,27 @@ namespace FixmensCMD.Repository
         public int ID { get; set; }
 
         public DateTime? FECHAUPDATE { get; set; }
+
+        [StringLength(20)]
+        public string TELEFONO { get; set; }
+        [StringLength(20)]
+        public string CELULAR { get; set; }
+        [StringLength(20)]
+        public string EMAIL { get; set; }
+
+        [StringLength(1)]
+        public string ENTREGADO { get; set; }
+        [StringLength(50)]
+        public string NS { get; set; }
+
+        public DateTime? FECHAENTREGADO { get; set; }
+
+        [StringLength(1)]
+        public string AVISADO { get; set; }
+
+        [StringLength(50)]
+        public string ESTADOEQUIPO { get; set; }
+        [StringLength(50)]
+        public string COLOR { get; set; }
     }
 }

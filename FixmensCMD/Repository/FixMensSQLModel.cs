@@ -47,6 +47,36 @@ namespace FixmensCMD.Repository
             modelBuilder.Entity<REPARACIONESVIEW>()
                 .Property(e => e.ESTADO)
                 .IsUnicode(false);
+
+            modelBuilder.Entity<REPARACIONESVIEW>()
+                .Property(e => e.CELULAR)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<REPARACIONESVIEW>()
+                .Property(e => e.TELEFONO)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<REPARACIONESVIEW>()
+                .Property(e => e.EMAIL)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<REPARACIONESVIEW>()
+                .Property(e => e.ENTREGADO)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<REPARACIONESVIEW>()
+                .Property(e => e.NS)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<REPARACIONESVIEW>()
+                .Property(e => e.AVISADO)
+                .IsUnicode(false);
+            modelBuilder.Entity<REPARACIONESVIEW>()
+                .Property(e => e.ESTADOEQUIPO)
+                .IsUnicode(false);
+            modelBuilder.Entity<REPARACIONESVIEW>()
+                .Property(e => e.COLOR)
+                .IsUnicode(false);
         }
     }
 }

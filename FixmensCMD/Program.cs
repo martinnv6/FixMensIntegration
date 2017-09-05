@@ -5,8 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FixmensCMD.BLL;
-using FixmensCMD.Repository;
-using FixmensIntegrationApi;
+
 
 namespace FixmensCMD
 {
@@ -22,23 +21,49 @@ namespace FixmensCMD
             var res = bllOrden.GetReparaciones();
             var changed = bllOrden.GetStatusChanged();
 
-            FixMensSQLModel modelSql = new FixMensSQLModel();
+            FixmensEntities modelSql = new FixmensEntities();
 
-            
-            foreach (var item in res)
+            List<string> phones = new List<string>();
+            List<long> changedAux = new List<long>();
+
+
+            try
             {
-                if (changed.Contains(item.CODIGO)) { 
-                modelSql.REPARACIONESVIEWs.AddOrUpdate(x=> x.CODIGO, item);
-                Console.Write("\n Orden actualizada :" + item.CODIGO);
+                foreach (var item in res)
+                {
+                    if (changed.Contains(item.CODIGO))
+                    {
+                        modelSql.REPARACIONESVIEW.AddOrUpdate(x => x.CODIGO, item);
+                        Console.Write("\n Orden actualizada: " + item.CODIGO);
+                        changedAux.Add(item.CODIGO);
+                        if (item.CELULAR.Length == 10)
+                        {
+                            phones.Add(item.CELULAR);
+                        }
+                    }
                 }
-            }
-            Console.Write("\n Integrando datos a Microsoft AZURE...");
-            modelSql.SaveChanges();
-            
-            //Update to integrated orders
-            bllOrden.UpdateStatusChanged(changed);
+                
+                if (changedAux.Count > 0)
+                {
+                    Console.Write("\n Integrando datos a Microsoft AZURE...");
+                    modelSql.SaveChanges();
 
-            Console.Write("\n Ordenes se actualizaron correctamente ......Presione una tecla");
+                    //Update to integrated orders
+                    bllOrden.UpdateStatusChanged(changedAux);
+                    Console.Write("\n"+changedAux.Count + " Ordenes se actualizaron correctamente ......Presione una tecla");
+                }
+                else
+                {
+                    Console.Write("\n No hay ordenes actualizadas ......Presione una tecla");
+                }
+
+               
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
 
             //Console.ReadKey();
         }

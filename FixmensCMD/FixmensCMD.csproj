@@ -60,14 +60,37 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BLL\OrdenBLL.cs" />
+    <Compile Include="FixMensSQLModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FixMensSQLModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FixMensSQLModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FixMensSQLModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FixMensSQLModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FixMensSQLModel.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Models\dto\OrderDto.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repository\FixMensSQLModel.cs" />
-    <Compile Include="Repository\REPARACIONESVIEW.cs" />
+    <Compile Include="REPARACIONESVIEW.cs">
+      <DependentUpon>FixMensSQLModel.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <EntityDeploy Include="FixMensSQLModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>FixMensSQLModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="FixMensSQLModel.edmx.diagram">
+      <DependentUpon>FixMensSQLModel.edmx</DependentUpon>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -79,7 +102,21 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="FixMensSQLModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>FixMensSQLModel.edmx</DependentUpon>
+      <LastGenOutput>FixMensSQLModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="FixMensSQLModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>FixMensSQLModel.edmx</DependentUpon>
+      <LastGenOutput>FixMensSQLModel.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Repository\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
