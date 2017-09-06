@@ -6,9 +6,11 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Web.Helpers;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace FixmensIntegrationApi.Controllers
 {
+    [EnableCors(origins: "https://www.fixmens.com.mx", headers: "*", methods: "*")]
     public class ReparacionesController : ApiController
     {
         MediaTypeFormatter formatter = null;
