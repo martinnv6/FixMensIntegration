@@ -7,6 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using FirebirdSql.Data.FirebirdClient;
 using FixmensCMD.Models.dto;
+using System.Net;
+using System.Text.RegularExpressions;
+using RestSharp;
 
 
 namespace FixmensCMD.BLL
@@ -189,6 +192,61 @@ namespace FixmensCMD.BLL
             conn.Close();
 
             
+        }
+
+        public void SendSMS(List<string> phones, string message,string send_at= null,string expires_at = null)
+        {
+            string smsDevice = ConfigurationManager.AppSettings["SMSDevice"];
+            var client = new RestClient("http://smsgateway.me/api/");
+            // client.Authenticator = new HttpBasicAuthenticator(username, password);
+
+            var request = new RestRequest("/v3/messages/send", Method.POST);
+            request.AddParameter("email", "martin.nv6@gmail.com"); // adds to POST or URL querystring based on Method
+            request.AddParameter("password", "1123581321"); // adds to POST or URL querystring based on Method
+            request.AddParameter("device", smsDevice); // adds to POST or URL querystring based on Method
+
+            foreach (var phone in phones)
+            {
+                var justNumber = Regex.Replace(phone, @"[^\d]", "");
+                request.AddParameter("number[]", justNumber); // adds to POST or URL querystring based on Method
+            }
+            //request.AddParameter("number[]", "8281203827");
+            //request.AddParameter("number[]", "8281221221");
+
+            request.AddParameter("message", message); // adds to POST or URL querystring based on Method
+            request.AddParameter("send_at", send_at ?? ""); // adds to POST or URL querystring based on Method
+            request.AddParameter("expires_at", expires_at ?? ""); // adds to POST or URL querystring based on Method
+
+            //request.AddUrlSegment("id", "123"); // replaces matching token in request.Resource
+
+            // easily add HTTP Headers
+            // request.AddHeader("header", "value");
+
+            // add files to upload (works with compatible verbs)
+            //request.AddFile(path);
+
+            //// execute the request
+            //IRestResponse response = client.Execute(request);
+            //var content = response.Content; // raw content as string
+
+            //// or automatically deserialize result
+            //// return content type is sniffed but can be explicitly set via RestClient.AddHandler();
+            //RestResponse<Person> response2 = client.Execute<Person>(request);
+            //var name = response2.Data.Name;
+
+            // easy async support
+            client.ExecuteAsync(request, response =>
+            {
+                Console.WriteLine(response.Content);
+            });
+
+            //// async with deserialization
+            //var asyncHandle = client.ExecuteAsync<Person>(request, response => {
+            //    Console.WriteLine(response.Data.Name);
+            //});
+
+            // abort the request on demand
+            //asyncHandle.Abort();
         }
     }
 }

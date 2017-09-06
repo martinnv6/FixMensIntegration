@@ -36,7 +36,7 @@ namespace FixmensCMD
                         modelSql.REPARACIONESVIEW.AddOrUpdate(x => x.CODIGO, item);
                         Console.Write("\n Orden actualizada: " + item.CODIGO);
                         changedAux.Add(item.CODIGO);
-                        if (item.CELULAR.Length == 10)
+                        if (item.CELULAR.Length >= 10)
                         {
                             phones.Add(item.CELULAR);
                         }
@@ -51,6 +51,7 @@ namespace FixmensCMD
                     //Update to integrated orders
                     bllOrden.UpdateStatusChanged(changedAux);
                     Console.Write("\n"+changedAux.Count + " Ordenes se actualizaron correctamente ......Presione una tecla");
+                    bllOrden.SendSMS(phones, "---FIXMENS--- ESTIMADO CLIENTE, SU EQUIPO HA CAMBIADO DE ESTATUS, INFO EN https://www.fixmens.com.mx/consultar.html O AL 8282840220, ENCUESTA DE SATISFACCION ---> goo.gl/forms/CMqBSKznBN6WzBI72");
                 }
                 else
                 {

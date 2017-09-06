@@ -229,9 +229,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Models\FacturaModel.cs" />
-    <Compile Include="Models\FixMensAzure.cs" />
     <Compile Include="Models\PruebaModel.cs" />
-    <Compile Include="Models\REPARACIONESVIEW.cs" />
     <Compile Include="PRUEBA.cs" />
     <Compile Include="REPARACIONE.cs" />
     <Compile Include="REPARACIONESVIEW.cs">
@@ -248,9 +246,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="fixmensintegration - FTP %282%29.pubxml" />
     <None Include="fixmensintegration - FTP.pubxml" />
-    <None Include="fixmensintegration - Web Deploy %282%29.pubxml" />
     <None Include="fixmensintegration - Web Deploy.pubxml" />
     <Content Include="Service References\Application Insights\ConnectedService.json" />
     <EntityDeploy Include="FixMensSQLModel.edmx">
