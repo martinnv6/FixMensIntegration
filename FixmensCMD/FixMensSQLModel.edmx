@@ -32,8 +32,42 @@
           <Property Name="COLOR" Type="varchar" MaxLength="50" />
           <Property Name="ESTADOEQUIPO" Type="varchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="SMS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" Nullable="false" />
+          <Property Name="DEVICEID" Type="bigint" Nullable="false" />
+          <Property Name="MESSAGE" Type="nvarchar(max)" />
+          <Property Name="STATUS" Type="varchar" MaxLength="50" />
+          <Property Name="SEND" Type="datetime" />
+          <Property Name="EXPIRES" Type="datetime" />
+          <Property Name="ERROR" Type="varchar" MaxLength="255" />
+          <Property Name="CREATED" Type="datetime" />
+          <Property Name="CONTACTID" Type="bigint" />
+          <Property Name="CONTACTNAME" Type="varchar" MaxLength="50" />
+          <Property Name="CONTACTNUMBER" Type="varchar" MaxLength="20" />
+          <Property Name="REPARCIONID" Type="bigint" />
+        </EntityType>
+        <Association Name="FK_SMS_REPARACIONESVIEW">
+          <End Role="REPARACIONESVIEW" Type="Self.REPARACIONESVIEW" Multiplicity="0..1" />
+          <End Role="SMS" Type="Self.SMS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REPARACIONESVIEW">
+              <PropertyRef Name="CODIGO" />
+            </Principal>
+            <Dependent Role="SMS">
+              <PropertyRef Name="REPARCIONID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="serviceModelStoreContainer">
           <EntitySet Name="REPARACIONESVIEW" EntityType="Self.REPARACIONESVIEW" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SMS" EntityType="Self.SMS" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_SMS_REPARACIONESVIEW" Association="Self.FK_SMS_REPARACIONESVIEW">
+            <End Role="REPARACIONESVIEW" EntitySet="REPARACIONESVIEW" />
+            <End Role="SMS" EntitySet="SMS" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -41,6 +75,11 @@
       <Schema Namespace="serviceModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="FixmensEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="REPARACIONESVIEW" EntityType="serviceModel.REPARACIONESVIEW" />
+          <EntitySet Name="SMS" EntityType="serviceModel.SMS" />
+          <AssociationSet Name="FK_SMS_REPARACIONESVIEW" Association="serviceModel.FK_SMS_REPARACIONESVIEW">
+            <End Role="REPARACIONESVIEW" EntitySet="REPARACIONESVIEW" />
+            <End Role="SMS" EntitySet="SMS" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="REPARACIONESVIEW">
           <Key>
@@ -68,7 +107,38 @@
           <Property Name="AVISADO" Type="Boolean" />
           <Property Name="COLOR" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="ESTADOEQUIPO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SMS" Relationship="serviceModel.FK_SMS_REPARACIONESVIEW" FromRole="REPARACIONESVIEW" ToRole="SMS" />
         </EntityType>
+        <EntityType Name="SMS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" />
+          <Property Name="DEVICEID" Type="Int64" Nullable="false" />
+          <Property Name="MESSAGE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="STATUS" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SEND" Type="DateTime" Precision="3" />
+          <Property Name="EXPIRES" Type="DateTime" Precision="3" />
+          <Property Name="ERROR" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CREATED" Type="DateTime" Precision="3" />
+          <Property Name="CONTACTID" Type="Int64" />
+          <Property Name="CONTACTNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CONTACTNUMBER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="REPARCIONID" Type="Int64" />
+          <NavigationProperty Name="REPARACIONESVIEW" Relationship="serviceModel.FK_SMS_REPARACIONESVIEW" FromRole="SMS" ToRole="REPARACIONESVIEW" />
+        </EntityType>
+        <Association Name="FK_SMS_REPARACIONESVIEW">
+          <End Type="serviceModel.REPARACIONESVIEW" Role="REPARACIONESVIEW" Multiplicity="0..1" />
+          <End Type="serviceModel.SMS" Role="SMS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REPARACIONESVIEW">
+              <PropertyRef Name="CODIGO" />
+            </Principal>
+            <Dependent Role="SMS">
+              <PropertyRef Name="REPARCIONID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -100,6 +170,24 @@
                 <ScalarProperty Name="NOMBRES" ColumnName="NOMBRES" />
                 <ScalarProperty Name="EQUIPO" ColumnName="EQUIPO" />
                 <ScalarProperty Name="CODIGO" ColumnName="CODIGO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SMS">
+            <EntityTypeMapping TypeName="serviceModel.SMS">
+              <MappingFragment StoreEntitySet="SMS">
+                <ScalarProperty Name="REPARCIONID" ColumnName="REPARCIONID" />
+                <ScalarProperty Name="CONTACTNUMBER" ColumnName="CONTACTNUMBER" />
+                <ScalarProperty Name="CONTACTNAME" ColumnName="CONTACTNAME" />
+                <ScalarProperty Name="CONTACTID" ColumnName="CONTACTID" />
+                <ScalarProperty Name="CREATED" ColumnName="CREATED" />
+                <ScalarProperty Name="ERROR" ColumnName="ERROR" />
+                <ScalarProperty Name="EXPIRES" ColumnName="EXPIRES" />
+                <ScalarProperty Name="SEND" ColumnName="SEND" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="MESSAGE" ColumnName="MESSAGE" />
+                <ScalarProperty Name="DEVICEID" ColumnName="DEVICEID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

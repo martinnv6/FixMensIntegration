@@ -63,6 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BLL\FixmensLog.cs" />
     <Compile Include="BLL\OrdenBLL.cs" />
     <Compile Include="FixMensSQLModel.Context.cs">
       <AutoGen>True</AutoGen>
@@ -80,9 +81,13 @@
       <DependentUpon>FixMensSQLModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\dto\OrderDto.cs" />
+    <Compile Include="Models\dto\SmsResponseDTO.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="REPARACIONESVIEW.cs">
+      <DependentUpon>FixMensSQLModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SMS.cs">
       <DependentUpon>FixMensSQLModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>

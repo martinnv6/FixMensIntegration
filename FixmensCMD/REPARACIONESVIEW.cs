@@ -14,6 +14,12 @@ namespace FixmensCMD
     
     public partial class REPARACIONESVIEW
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public REPARACIONESVIEW()
+        {
+            this.SMS = new HashSet<SMS>();
+        }
+    
         public long CODIGO { get; set; }
         public string EQUIPO { get; set; }
         public string NOMBRES { get; set; }
@@ -36,5 +42,8 @@ namespace FixmensCMD
         public Nullable<bool> AVISADO { get; set; }
         public string COLOR { get; set; }
         public string ESTADOEQUIPO { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SMS> SMS { get; set; }
     }
 }

@@ -216,6 +216,7 @@ namespace FixmensCMD.BLL
             request.AddParameter("message", message); // adds to POST or URL querystring based on Method
             request.AddParameter("send_at", send_at ?? ""); // adds to POST or URL querystring based on Method
             request.AddParameter("expires_at", expires_at ?? ""); // adds to POST or URL querystring based on Method
+            
 
             //request.AddUrlSegment("id", "123"); // replaces matching token in request.Resource
 
@@ -231,14 +232,41 @@ namespace FixmensCMD.BLL
 
             //// or automatically deserialize result
             //// return content type is sniffed but can be explicitly set via RestClient.AddHandler();
-            //RestResponse<Person> response2 = client.Execute<Person>(request);
+            IRestResponse<SmsResponseDTO> response = client.Execute<SmsResponseDTO>(request);
+
+            FixmensEntities modelSql = new FixmensEntities();
+            List<SMS> smsList = new List<SMS>();
+
+            foreach(var item in response.Data.result.success)
+            { 
+             SMS sms = new SMS();
+                sms.REPARCIONID = long.Parse(phones.FirstOrDefault(x => x == item.contact.number));
+                sms.DEVICEID = long.Parse(item.device_id);
+                sms.CONTACTID = long.Parse(item.contact.id);
+                sms.CONTACTNAME = item.contact.name;
+                sms.CONTACTNUMBER = item.contact.number;
+                sms.CREATED = ToDateTimeFromEpoch(long.Parse(item.created_at)).ToLocalTime();
+                sms.ERROR = item.error;
+                sms.EXPIRES = ToDateTimeFromEpoch(long.Parse(item.expires_at)).ToLocalTime();
+                sms.MESSAGE = item.message;
+                sms.ID = long.Parse(item.id);
+                sms.SEND = ToDateTimeFromEpoch(long.Parse(item.send_at)).ToLocalTime();
+                sms.STATUS = item.status;
+                smsList.Add(sms);
+
+            }
+            modelSql.SMS.AddRange(smsList);
+            modelSql.SaveChanges();
+
             //var name = response2.Data.Name;
 
+
+
             // easy async support
-            client.ExecuteAsync(request, response =>
-            {
-                Console.WriteLine(response.Content);
-            });
+            //client.ExecuteAsync(request, response =>
+            //{
+            //    Console.WriteLine(response.Content);
+            //});
 
             //// async with deserialization
             //var asyncHandle = client.ExecuteAsync<Person>(request, response => {
@@ -247,6 +275,14 @@ namespace FixmensCMD.BLL
 
             // abort the request on demand
             //asyncHandle.Abort();
+        }
+        /// <summary>
+        /// Converts the given epoch time to a <see cref="DateTime"/> with <see cref="DateTimeKind.Utc"/> kind.
+        /// </summary>
+        public static DateTime ToDateTimeFromEpoch(long intDate)
+        {
+            var timeInTicks = intDate * TimeSpan.TicksPerSecond;
+            return new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddTicks(timeInTicks);
         }
     }
 }

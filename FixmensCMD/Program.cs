@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -62,6 +63,9 @@ namespace FixmensCMD
             }
             catch (Exception e)
             {
+                FixmensLog log = new FixmensLog(e.ToString() + e.StackTrace);
+                
+                
                 Console.WriteLine(e);
                 throw;
             }
