@@ -9,6 +9,7 @@ using FirebirdSql.Data.FirebirdClient;
 using FixmensCMD.Models.dto;
 using System.Net;
 using System.Text.RegularExpressions;
+using FixmensCMD.Models;
 using RestSharp;
 
 
@@ -16,7 +17,7 @@ namespace FixmensCMD.BLL
 {
     public class OrdenBLL
     {
-        public List<long> GetStatusChanged()
+     /*   public List<long> GetStatusChanged()
         {
             var result = new List<long>();
 
@@ -64,33 +65,19 @@ namespace FixmensCMD.BLL
 
             return result;
 
-        }
+        }*/
 
 
         public List<REPARACIONESVIEW> GetReparaciones()
         {
-
             var result = new List<REPARACIONESVIEW>();
-
-
-
-            FbConnection conn = new FbConnection();
-            FbCommand cmd = new FbCommand();
-            FbDataAdapter da = new FbDataAdapter();
-            DataTable dt = new DataTable();
             string firebirdServer = ConfigurationManager.AppSettings["firebird.server"];
 
-            conn.ConnectionString = "User=SYSDBA;Password=masterkey;Database=" + firebirdServer +
+            var ConnectionString = "User=SYSDBA;Password=masterkey;Database=" + firebirdServer +
                                     ";Port=3050;Dialect=3;Charset=NONE;Role=;Connection lifetime=15;Pooling=true;" +
                                     "MinPoolSize=0;MaxPoolSize=50;Packet Size=8192;ServerType=0;";
-            cmd.Connection = conn;
 
-            string stardate = DateTime.Now.AddMonths(-1).ToString("yyyy-MM-dd");
-
-
-
-
-            cmd.CommandText = "SELECT R.CODIGO, a.MARCA || ' - ' || a.MODELO as EQUIPO, C.NOMBRES as NOMBRES, " +
+            var query = "SELECT DISTINCT R.CODIGO, a.MARCA || ' - ' || a.MODELO as EQUIPO, C.NOMBRES as NOMBRES, " +
                               "C.telefono AS TELEFONO, C.celular as CELULAR, C.EMAIL AS EMAIL,R.FALLA,R.INFORMETALLER,P.DETALLE, " +
                               "P.PRESUPUESTO, I.NOMBRES AS TECNICO, R.FECHAINGRESO,R.PROMETIDO,R.FECHATERMINADO, ESTADO.NOMBRE ESTADO, " +
                               "R.ENTREGADO, R.FECHA_ENTREGADO, R.NS, R.AVISADO, R.CAMPOLIBRE1 AS COLOR, CAMPOLIBRE2 AS ESTADOEQUIPO " +
@@ -99,102 +86,88 @@ namespace FixmensCMD.BLL
                               "JOIN INTEGRANTES I ON R.TECNICO = I.CODIGO " +
                               "inner join ESTADO on estado.CODIGO = R.ESTADO " +
                               "inner join APARATO a on R.NS = a.NS " +
-                              "WHERE R.FECHA_AUD > '" + stardate + "' " +
+                              "inner join REPARACIONES_HISTORICO_ESTADO RH on R.CODIGO = RH.IDREPARACION " +
+                              "where RH.INTEGRADO = 'N' " +
                               "ORDER BY R.CODIGO ASC";
-            cmd.CommandType = CommandType.Text;
-
-
-            conn.Open();
-            da.SelectCommand = cmd;
-            da.Fill(dt);
-            conn.Close();
-            var dateAux = DateTime.Now.AddYears(-30);
-            if (dt.Rows.Count > 0)
+            using (FbConnection SelectConnection = new FbConnection(ConnectionString))
             {
-                foreach (DataRow row in dt.Rows)
+                SelectConnection.Open();
+                FbCommand writeCommand = new FbCommand(query, SelectConnection);
+                FbDataAdapter da = new FbDataAdapter();
+                DataTable dt = new DataTable();
+                da.SelectCommand = writeCommand;
+                da.Fill(dt);
+                SelectConnection.Close();
+                var dateAux = DateTime.Now.AddYears(-30);
+                if (dt.Rows.Count > 0)
                 {
-                    DateTime ingreso;
-                    DateTime prometido;
-                    DateTime entregado;
-                    DateTime terminado;
-                    var rowResult = new REPARACIONESVIEW()
+                    foreach (DataRow row in dt.Rows)
                     {
-                        CODIGO = long.Parse(row["CODIGO"].ToString()),
-                        EQUIPO = row["EQUIPO"].ToString(),
-                        NOMBRES = row["NOMBRES"].ToString(),
-                        FALLA = row["FALLA"].ToString(),
-                        INFORMETALLER = row["INFORMETALLER"].ToString(),
-                        TECNICO = row["TECNICO"].ToString(),
-                        DETALLE = row["DETALLE"].ToString(),
-                        PRESPUPUESTO = "$" + $"{row["PRESUPUESTO"]:0,0.00}",
-                        FECHAINGRESO = DateTime.TryParse(row["FECHAINGRESO"].ToString(), out ingreso) && ingreso > dateAux ? ingreso : (DateTime?)null,
-                        PROMETIDO = DateTime.TryParse(row["PROMETIDO"].ToString(), out prometido) && prometido > dateAux ? prometido : (DateTime?)null,
-                        FECHATERMINADO = DateTime.TryParse(row["FECHATERMINADO"].ToString(), out terminado) && terminado > dateAux ? terminado : (DateTime?)null,
-                        ESTADO = row["ESTADO"].ToString(),
-                        FECHAUPDATE = DateTime.Now,
+                        DateTime ingreso;
+                        DateTime prometido;
+                        DateTime entregado;
+                        DateTime terminado;
+                        var rowResult = new REPARACIONESVIEW()
+                        {
+                            CODIGO = long.Parse(row["CODIGO"].ToString()),
+                            EQUIPO = row["EQUIPO"].ToString(),
+                            NOMBRES = row["NOMBRES"].ToString(),
+                            FALLA = row["FALLA"].ToString(),
+                            INFORMETALLER = row["INFORMETALLER"].ToString(),
+                            TECNICO = row["TECNICO"].ToString(),
+                            DETALLE = row["DETALLE"].ToString(),
+                            PRESPUPUESTO = "$" + $"{row["PRESUPUESTO"]:0,0.00}",
+                            FECHAINGRESO = DateTime.TryParse(row["FECHAINGRESO"].ToString(), out ingreso) && ingreso > dateAux ? ingreso : (DateTime?)null,
+                            PROMETIDO = DateTime.TryParse(row["PROMETIDO"].ToString(), out prometido) && prometido > dateAux ? prometido : (DateTime?)null,
+                            FECHATERMINADO = DateTime.TryParse(row["FECHATERMINADO"].ToString(), out terminado) && terminado > dateAux ? terminado : (DateTime?)null,
+                            ESTADO = row["ESTADO"].ToString(),
+                            FECHAUPDATE = DateTime.Now,
 
-                        CELULAR = row["CELULAR"].ToString(),
-                        TELEFONO = row["TELEFONO"].ToString(),
-                        EMAIL = row["EMAIL"].ToString(),
-                        ENTREGADO = row["ENTREGADO"].ToString() == "S",
-                        NS = row["NS"].ToString(),
-                        FECHAENTREGADO = DateTime.TryParse(row["FECHA_ENTREGADO"].ToString(), out entregado) && entregado > dateAux ? entregado : (DateTime?)null,
-                        AVISADO = row["AVISADO"].ToString() == "S",
-                        COLOR = row["COLOR"].ToString(),
-                        ESTADOEQUIPO = row["ESTADOEQUIPO"].ToString()
+                            CELULAR = row["CELULAR"].ToString(),
+                            TELEFONO = row["TELEFONO"].ToString(),
+                            EMAIL = row["EMAIL"].ToString(),
+                            ENTREGADO = row["ENTREGADO"].ToString() == "S",
+                            NS = row["NS"].ToString(),
+                            FECHAENTREGADO = DateTime.TryParse(row["FECHA_ENTREGADO"].ToString(), out entregado) && entregado > dateAux ? entregado : (DateTime?)null,
+                            AVISADO = row["AVISADO"].ToString() == "S",
+                            COLOR = row["COLOR"].ToString(),
+                            ESTADOEQUIPO = row["ESTADOEQUIPO"].ToString()
 
-                    };
-                    result.Add(rowResult);
+                        };
+                        result.Add(rowResult);
+                    }
+
+
                 }
-
-
             }
-            else
-            {
-
-            }
-
 
             return result;
         }
 
         public void UpdateStatusChanged(List<long> ordersId)
         {
-           
-
-
-
-            FbConnection conn = new FbConnection();
-            FbCommand cmd = new FbCommand();
-            FbDataAdapter da = new FbDataAdapter();
-            DataTable dt = new DataTable();
+            string orders = string.Join<long>(",", ordersId);
             string firebirdServer = ConfigurationManager.AppSettings["firebird.server"];
-
-            conn.ConnectionString = "User=SYSDBA;Password=masterkey;Database=" + firebirdServer +
+           
+            var ConnectionString = "User=SYSDBA;Password=masterkey;Database=" + firebirdServer +
                                     ";Port=3050;Dialect=3;Charset=NONE;Role=;Connection lifetime=15;Pooling=true;" +
                                     "MinPoolSize=0;MaxPoolSize=50;Packet Size=8192;ServerType=0;";
-            cmd.Connection = conn;
-
-            string orders = string.Join<long>(",", ordersId);
-
-
-
-
-            cmd.CommandText = "update REPARACIONES_HISTORICO_ESTADO rh " +
-                              "set RH.INTEGRADO = 'Y' " +
-                              "where rh.IDREPARACION in ("+ orders + ")";
-            cmd.CommandType = CommandType.Text;
-
-            var a = conn.State;
-            conn.Open();
-            da.SelectCommand = cmd;
-            da.Fill(dt);
-            conn.Close();
-
-            
+            using (FbConnection UpdateConnection = new FbConnection(ConnectionString))
+            {
+                UpdateConnection.Open();
+                var query = "update REPARACIONES_HISTORICO_ESTADO rh " +
+                            "set RH.INTEGRADO = 'S' " +
+                            "where rh.IDREPARACION in (" + orders + ")";
+                FbCommand writeCommand = new FbCommand(query, UpdateConnection);
+                
+                writeCommand.ExecuteNonQuery();
+            }
+    
         }
 
-        public void SendSMS(List<string> phones, string message,string send_at= null,string expires_at = null)
+
+
+        public void SendSMS(ref string logAvance,List<PhoneModel> phones, string message,string send_at= null,string expires_at = null)
         {
             string smsDevice = ConfigurationManager.AppSettings["SMSDevice"];
             var client = new RestClient("http://smsgateway.me/api/");
@@ -207,7 +180,9 @@ namespace FixmensCMD.BLL
 
             foreach (var phone in phones)
             {
-                var justNumber = Regex.Replace(phone, @"[^\d]", "");
+                logAvance += "\r\n #Envio SMS--> " + phone.PhoneNumber;
+                var justNumber = Regex.Replace(phone.PhoneNumber, @"[^\d]", "");
+                logAvance += " #Formateado--> " + justNumber + Environment.NewLine;
                 request.AddParameter("number[]", justNumber); // adds to POST or URL querystring based on Method
             }
             //request.AddParameter("number[]", "8281203827");
@@ -236,24 +211,35 @@ namespace FixmensCMD.BLL
 
             FixmensEntities modelSql = new FixmensEntities();
             List<SMS> smsList = new List<SMS>();
-
-            foreach(var item in response.Data.result.success)
-            { 
-             SMS sms = new SMS();
-                sms.REPARCIONID = long.Parse(phones.FirstOrDefault(x => x == item.contact.number));
-                sms.DEVICEID = long.Parse(item.device_id);
-                sms.CONTACTID = long.Parse(item.contact.id);
-                sms.CONTACTNAME = item.contact.name;
-                sms.CONTACTNUMBER = item.contact.number;
-                sms.CREATED = ToDateTimeFromEpoch(long.Parse(item.created_at)).ToLocalTime();
-                sms.ERROR = item.error;
-                sms.EXPIRES = ToDateTimeFromEpoch(long.Parse(item.expires_at)).ToLocalTime();
-                sms.MESSAGE = item.message;
-                sms.ID = long.Parse(item.id);
-                sms.SEND = ToDateTimeFromEpoch(long.Parse(item.send_at)).ToLocalTime();
-                sms.STATUS = item.status;
-                smsList.Add(sms);
-
+            logAvance += "\r\n";
+            foreach (var item in response.Data.result.success)
+            {
+                logAvance += "\r\nGuardando registro en Azure de sms enviado a " + item.contact.number;
+                var firstOrDefault = phones.FirstOrDefault(x => Regex.Replace(x.PhoneNumber, @"[^\d]", "") == item.contact.number);
+                if (firstOrDefault != null)
+                {
+                    SMS sms = new SMS
+                    {
+                        REPARCIONID = firstOrDefault
+                            .ReparacionId,
+                        DEVICEID = long.Parse(item.device_id),
+                        CONTACTID = long.Parse(item.contact.id),
+                        CONTACTNAME = item.contact.name,
+                        CONTACTNUMBER = item.contact.number,
+                        CREATED = ToDateTimeFromEpoch(long.Parse(item.created_at)).ToLocalTime(),
+                        ERROR = item.error,
+                        EXPIRES = ToDateTimeFromEpoch(long.Parse(item.expires_at)).ToLocalTime(),
+                        MESSAGE = item.message,
+                        ID = long.Parse(item.id),
+                        SEND = ToDateTimeFromEpoch(long.Parse(item.send_at)).ToLocalTime(),
+                        STATUS = item.status
+                    };
+                    smsList.Add(sms);
+                }
+                else
+                {
+                    logAvance += Environment.NewLine+item.contact.number + " No se encontro en la Lista";
+                }
             }
             modelSql.SMS.AddRange(smsList);
             modelSql.SaveChanges();

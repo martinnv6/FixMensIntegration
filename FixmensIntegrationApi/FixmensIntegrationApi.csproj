@@ -204,8 +204,10 @@
   <ItemGroup>
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="BLL\InvoicesBLL.cs" />
+    <Compile Include="BLL\SmsBLL.cs" />
     <Compile Include="Controllers\MailInvoicesController.cs" />
     <Compile Include="Controllers\ReparacionesController.cs" />
+    <Compile Include="Controllers\SmsController.cs" />
     <Compile Include="database_firewall_rules.cs" />
     <Compile Include="FixmensModel.cs" />
     <Compile Include="FixMensSQLModel.Context.cs">
@@ -230,9 +232,13 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Models\FacturaModel.cs" />
     <Compile Include="Models\PruebaModel.cs" />
+    <Compile Include="Models\ReparacionesViewDTO.cs" />
     <Compile Include="PRUEBA.cs" />
     <Compile Include="REPARACIONE.cs" />
     <Compile Include="REPARACIONESVIEW.cs">
+      <DependentUpon>FixMensSQLModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SMS.cs">
       <DependentUpon>FixMensSQLModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>

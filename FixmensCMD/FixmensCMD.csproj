@@ -82,6 +82,7 @@
     </Compile>
     <Compile Include="Models\dto\OrderDto.cs" />
     <Compile Include="Models\dto\SmsResponseDTO.cs" />
+    <Compile Include="Models\PhoneModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="REPARACIONESVIEW.cs">

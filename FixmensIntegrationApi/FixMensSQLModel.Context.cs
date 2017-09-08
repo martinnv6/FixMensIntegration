@@ -26,5 +26,6 @@ namespace FixmensIntegrationApi
         }
     
         public virtual DbSet<REPARACIONESVIEW> REPARACIONESVIEW { get; set; }
+        public virtual DbSet<SMS> SMS { get; set; }
     }
 }

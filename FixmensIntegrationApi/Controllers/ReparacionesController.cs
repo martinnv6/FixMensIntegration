@@ -7,6 +7,7 @@ using System.Net.Http.Formatting;
 using System.Web.Helpers;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using FixmensIntegrationApi.Models;
 
 namespace FixmensIntegrationApi.Controllers
 {
@@ -36,7 +37,8 @@ namespace FixmensIntegrationApi.Controllers
             {
                 //UserToken token = new UserToken(User);
                 serviceEntities model = new serviceEntities();
-                REPARACIONESVIEW result = model.REPARACIONESVIEW.FirstOrDefault(x => x.CODIGO ==id);
+                model.Configuration.LazyLoadingEnabled = false;
+                var result = model.REPARACIONESVIEW.FirstOrDefault(x => x.CODIGO ==id);
 
                 return Request.CreateResponse(HttpStatusCode.OK,
                     result, formatter);

@@ -6,6 +6,8 @@
     <edmx:Diagrams>
       <Diagram DiagramId="5395e8976ac342ac89ee79f323078ee3" Name="Diagram1">
         <EntityTypeShape EntityType="serviceModel.REPARACIONESVIEW" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="serviceModel.SMS" Width="1.5" PointX="3" PointY="1.75" />
+        <AssociationConnector Association="serviceModel.FK_SMS_REPARACIONESVIEW" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
