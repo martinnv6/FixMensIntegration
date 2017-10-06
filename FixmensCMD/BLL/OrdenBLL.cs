@@ -79,7 +79,35 @@ namespace FixmensCMD.BLL
 
             var query = "SELECT DISTINCT R.CODIGO, a.MARCA || ' - ' || a.MODELO as EQUIPO, C.NOMBRES as NOMBRES, " +
                               "C.telefono AS TELEFONO, C.celular as CELULAR, C.EMAIL AS EMAIL,R.FALLA,R.INFORMETALLER,P.DETALLE, " +
-                              "P.PRESUPUESTO, I.NOMBRES AS TECNICO, R.FECHAINGRESO,R.PROMETIDO,R.FECHATERMINADO, ESTADO.NOMBRE ESTADO, " +
+                              "P.PRESUPUESTO, I.NOMBRES AS TECNICO, " +
+
+
+
+
+                        "R.FECHAINGRESO + " +
+                            "case " +
+                                "when R.HORAINGRESO like '%a.m.%' then " +
+                                    "(select CAST(LPAD(R.HORAINGRESO, 5) AS TIME) from rdb$database) " +
+                                "WHEN R.HORAINGRESO LIKE '%p.m.%' then " +
+                                    "dateadd(12 hour to(select CAST(LPAD(R.HORAINGRESO, 5) AS TIME) from rdb$database)) " +
+                            "else " +
+                                "cast('00:00' as time) " +
+                        "end AS FECHAINGRESO, " +
+                        
+                        "R.FECHATERMINADO + " +
+                            "case " +
+                                "when R.HORATERMINADO like '%a.m.%' then " +
+                                    "(select CAST(LPAD(R.HORAINGRESO, 5) AS TIME) from rdb$database) " +
+                                "WHEN R.HORATERMINADO LIKE '%p.m.%' then " +
+                                    "dateadd(12 hour to(select CAST(LPAD(R.HORATERMINADO, 5) AS TIME) from rdb$database)) " +
+                                "else " +
+                                    "cast('00:00' as time) " +
+                        "end AS FECHATERMINADO " +
+                        
+
+
+
+                                ",R.PROMETIDO, ESTADO.NOMBRE ESTADO, " +
                               "R.ENTREGADO, R.FECHA_ENTREGADO, R.NS, R.AVISADO, R.CAMPOLIBRE1 AS COLOR, CAMPOLIBRE2 AS ESTADOEQUIPO " +
                               "FROM REPARACIONES R JOIN CLIENTES C ON R.CLIENTE = C.CODIGO " +
                               "JOIN PRESUPUESTOS P ON R.CODIGO = P.IDREPARACION " +

@@ -23,11 +23,21 @@ namespace FixmensIntegrationApi.Controllers
         }
 
         // POST: api/Sms
-        public void Post(string id,string status)//[FromBody]MyModel value)
+        public HttpResponseMessage Post(string id,string status)//[FromBody]MyModel value)
         {
-            SmsBLL smsbll = new SmsBLL();
             
-            smsbll.UpdateSMSStatus(long.Parse(id), status);
+            try
+            {
+                SmsBLL smsbll = new SmsBLL();
+
+                smsbll.UpdateSMSStatus(long.Parse(id), status);
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (System.Exception e)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, e.InnerException + e.Message);
+            }
+
         }
 
         // PUT: api/Sms/5

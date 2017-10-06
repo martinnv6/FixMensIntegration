@@ -11,7 +11,7 @@ using FixmensIntegrationApi.Models;
 
 namespace FixmensIntegrationApi.Controllers
 {
-    [EnableCors(origins: "https://www.fixmens.com.mx", headers: "*", methods: "*")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ReparacionesController : ApiController
     {
         MediaTypeFormatter formatter = null;

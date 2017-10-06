@@ -11,5 +11,6 @@ namespace FixmensCMD.Models
         public string PhoneNumber { get; set; }
         
         public long ReparacionId { get; set; }
+        public string Status { get; set; }
     }
 }

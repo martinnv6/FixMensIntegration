@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity.Migrations;
 using System.IO;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace FixmensCMD
             Console.Write("\n\n Leyendo cambios recientes en ordenes.....");
             OrdenBLL bllOrden = new OrdenBLL();
             var res = bllOrden.GetReparaciones();
-           
+
 
             logAvance += " ------------------- \r\n";
             logAvance += res.Count + " ordenes con cambios en BD \r\n";
@@ -46,12 +47,13 @@ namespace FixmensCMD
 
                     logAvance += " \r\nOrden actualizada: " + item.CODIGO;
                     changedAux.Add(item.CODIGO);
-                    if (item.CELULAR.Length >= 10 || item.TELEFONO.Length >=10)
+                    if (item.CELULAR.Length >= 10 || item.TELEFONO.Length >= 10)
                     {
                         PhoneModel ph = new PhoneModel
                         {
                             PhoneNumber = string.IsNullOrEmpty(item.CELULAR) ? item.TELEFONO : item.CELULAR,
-                            ReparacionId = item.CODIGO
+                            ReparacionId = item.CODIGO,
+                            Status = item.ESTADO
                         };
                         logAvance += " Celular: " + ph.PhoneNumber + "\r\n";
                         phones.Add(ph);
@@ -81,18 +83,37 @@ namespace FixmensCMD
 
                     Console.Write("Status actualizados");
                     logAvance += " Status actualizados" + "\r\n";
-                    Console.Write("\n" + changedAux.Count + " Ordenes se actualizaron correctamente");
+                    Console.Write(changedAux.Count + " Ordenes se actualizaron correctamente");
                     logAvance += changedAux.Count + " Ordenes se actualizaron correctamente" + "\r\n";
                     logAvance += " ------------------- \r\n\r\n";
+                    var sendSms = ConfigurationManager.AppSettings["sendSms"];
+                    if (sendSms == "true")
+                    {
+                        logAvance += " ------------------- \r\n";
+                        Console.Write("\n\n Enviando " + phones.Count + "SMS...");
+                        logAvance += "Enviando " + phones.Count + "SMS..." + "\r\n";
 
-                    logAvance += " ------------------- \r\n";
-                    Console.Write("\n" + phones.Count + "\n Enviando SMS...");
-                    logAvance += "Enviando " + phones.Count + "SMS..." + "\r\n";
-                    bllOrden.SendSMS(ref logAvance, phones,
-                        "---FIXMENS--- ESTIMADO CLIENTE, SU EQUIPO HA CAMBIADO DE ESTATUS, INFO EN https://www.fixmens.com.mx/consultar.html O AL 8282840220, ENCUESTA DE SATISFACCION ---> goo.gl/forms/CMqBSKznBN6WzBI72");
-                    Console.Write("\n" + changedAux.Count + "\n SMS Enviados");
-                    logAvance += phones.Count + " SMS Enviados" + "\r\n";
-                    logAvance += " ------------------- \r\n\r\n";
+                        var urlOrden = ConfigurationManager.AppSettings["UrlConsultarOrden"];
+                        var urlEncuesta = ConfigurationManager.AppSettings["UrlEncuestaSatisfaccion"];
+                        var telFixens = ConfigurationManager.AppSettings["TelFixmens"];
+
+
+                        foreach (var phone in phones)
+                        {
+                            var phonesAux = new List<PhoneModel> { phone };
+                            bllOrden.SendSMS(ref logAvance, phonesAux,
+                                "---FIXMENS--- Estimado cliente su equipo: " + phone.ReparacionId + " se encuentra en estatus: " + phone.Status + ", consulte el detalle en " + urlOrden + " o al " + telFixens);
+                            if (phone.Status == "Reparación Terminada")
+                            {
+                                bllOrden.SendSMS(ref logAvance, phonesAux,
+                                    "Por favor ayudenos a mejorar nuestro servicio contestando esta breve encuesta anonima, no le tomara mas de 1 minuto---> " + urlEncuesta);
+                            }
+                        }
+
+                        Console.Write("\n" + changedAux.Count + "\n SMS Enviados");
+                        logAvance += phones.Count + " SMS Enviados" + "\r\n";
+                        logAvance += " ------------------- \r\n\r\n";
+                    }
                 }
                 else
                 {
@@ -113,7 +134,7 @@ namespace FixmensCMD
             }
             finally
             {
-                
+
             }
 
             //Console.ReadKey();
