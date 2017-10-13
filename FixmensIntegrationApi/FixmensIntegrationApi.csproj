@@ -207,7 +207,9 @@
     <Compile Include="BLL\SmsBLL.cs" />
     <Compile Include="Controllers\MailInvoicesController.cs" />
     <Compile Include="Controllers\ReparacionesController.cs" />
+    <Compile Include="Controllers\ReparacionesSummaryController.cs" />
     <Compile Include="Controllers\SmsController.cs" />
+    <Compile Include="Controllers\TecnicosController.cs" />
     <Compile Include="database_firewall_rules.cs" />
     <Compile Include="FixmensModel.cs" />
     <Compile Include="FixMensSQLModel.Context.cs">
