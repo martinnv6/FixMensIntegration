@@ -57,6 +57,7 @@ namespace FixmensIntegrationApi.Controllers
             {
                 //UserToken token = new UserToken(User);
                 serviceEntities model = new serviceEntities();
+                model.Configuration.LazyLoadingEnabled = false;
                 List<REPARACIONESVIEW> result = model.REPARACIONESVIEW.Where(x => x.NOMBRES.Contains(nombre)).ToList();
 
                 return Request.CreateResponse(HttpStatusCode.OK,
