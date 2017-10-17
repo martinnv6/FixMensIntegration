@@ -1,5 +1,4 @@
-﻿using FixmensIntegrationApi.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -11,20 +10,18 @@ using System.Web.Http.Cors;
 namespace FixmensIntegrationApi.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    public class ReparacionesSummaryController : ApiController
+    public class ReparacionesByTecnicoController : ApiController
     {
         MediaTypeFormatter formatter = null;
-        public ReparacionesSummaryController()
+        public ReparacionesByTecnicoController()
         {
             //Get Conection
 
             this.formatter = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
         }
-
-        
-        
-        public HttpResponseMessage Get(DateTime fechaInicio, DateTime fechaFin,bool soloEntregado, string userName = "")
+        public HttpResponseMessage Get(DateTime fechaInicio, DateTime fechaFin, bool soloEntregado, string userName = "")
         {
+
 
             try
             {
@@ -32,15 +29,7 @@ namespace FixmensIntegrationApi.Controllers
                 //UserToken token = new UserToken(User);
                 serviceEntities model = new serviceEntities();
                 model.Configuration.LazyLoadingEnabled = false;
-                var list = model.REPARACIONESVIEW.Where(x => x.TECNICO.Contains(userName) && x.FECHATERMINADO >= fechaInicio && x.FECHATERMINADO <= fechaFin && (!soloEntregado || x.ENTREGADO.Value)).GroupBy(a => a.FECHATERMINADO).Select(g => new { g.Key.Value, CANTIDAD = g.Count()}).ToList();
-                List<ReparacionesSummaryDTO> result = new List<ReparacionesSummaryDTO>();
-                foreach(var item in list)
-                {
-                    var element = new ReparacionesSummaryDTO();
-                    element.FECHATERMINADO = item.Value;
-                    element.CANTIDAD = item.CANTIDAD;
-                    result.Add(element);
-                }
+                List<REPARACIONESVIEW> result = model.REPARACIONESVIEW.Where(x => x.TECNICO.Contains(userName) && x.FECHATERMINADO >= fechaInicio && x.FECHATERMINADO <= fechaFin && (!soloEntregado || x.ENTREGADO.Value)).ToList();
 
                 return Request.CreateResponse(HttpStatusCode.OK,
                     result);
@@ -51,8 +40,5 @@ namespace FixmensIntegrationApi.Controllers
             }
 
         }
-
-       
-       
     }
 }

@@ -5,7 +5,13 @@ using System.Web;
 
 namespace FixmensIntegrationApi.Models
 {
-    public class ReparacionesViewDTO
+    public class ReparacionesSummaryDTO
+    {
+        public DateTime FECHATERMINADO { get; set; }
+        public int CANTIDAD { get; set; }
+       
+    }
+       public class ReparacionesViewDTO
     {
         public long CODIGO { get; set; }
         public string EQUIPO { get; set; }
