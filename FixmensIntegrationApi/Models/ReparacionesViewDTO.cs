@@ -9,7 +9,8 @@ namespace FixmensIntegrationApi.Models
     {
         public DateTime FECHATERMINADO { get; set; }
         public int CANTIDAD { get; set; }
-       
+        public string TECNICO { get; set; }
+
     }
        public class ReparacionesViewDTO
     {

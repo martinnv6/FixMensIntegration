@@ -22,9 +22,9 @@ namespace FixmensIntegrationApi.Controllers
             this.formatter = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
         }
 
-        
-        
-        public HttpResponseMessage Get(DateTime fechaInicio, DateTime fechaFin,bool soloEntregado, string userName = "")
+
+
+        public HttpResponseMessage Get(DateTime fechaInicio, DateTime fechaFin, bool soloEntregado, string userName = "")
         {
 
             try
@@ -33,27 +33,29 @@ namespace FixmensIntegrationApi.Controllers
                 //UserToken token = new UserToken(User);
                 serviceEntities model = new serviceEntities();
                 model.Configuration.LazyLoadingEnabled = false;
-                var list = model.REPARACIONESVIEW.Where(x => x.TECNICO.Contains(userName) && x.FECHATERMINADO >= fechaInicio && x.FECHATERMINADO <= fechaFin && (!soloEntregado || x.ENTREGADO.Value)).GroupBy(a => DbFunctions.TruncateTime(a.FECHATERMINADO.Value)).Select(g => new { g.Key, CANTIDAD = g.Count()}).ToList();
-                List<ReparacionesSummaryDTO> result = new List<ReparacionesSummaryDTO>();
-                foreach(var item in list)
+                List<string> users = userName.Split(',').ToList();
+                List<List<ReparacionesSummaryDTO>> result = new List<List<ReparacionesSummaryDTO>>();
+                foreach (var user in users)
                 {
-                    var element = new ReparacionesSummaryDTO();
-                    element.FECHATERMINADO = item.Key.Value;
-                    element.CANTIDAD = item.CANTIDAD;
-                    result.Add(element);
+                    if (user != "" || userName == "")
+                    {
+                        var list = model.REPARACIONESVIEW.Where(x => x.TECNICO == user && x.FECHATERMINADO >= fechaInicio && x.FECHATERMINADO <= fechaFin && (!soloEntregado || x.ENTREGADO.Value)).GroupBy(a => DbFunctions.TruncateTime(a.FECHATERMINADO.Value)).Select(g => new ReparacionesSummaryDTO { FECHATERMINADO = g.Key.Value, CANTIDAD = g.Count(), TECNICO = g.FirstOrDefault().TECNICO /*, GENERADO = g.Sum(c=>c.PRESPUPUESTO*/}).ToList();
+                        result.Add(list);
+                    }
                 }
+            
 
                 return Request.CreateResponse(HttpStatusCode.OK,
                     result);
-            }
+        }
             catch (System.Exception e)
             {
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, e.InnerException + e.Message);
             }
 
-        }
+}
 
-       
-       
+
+
     }
 }
