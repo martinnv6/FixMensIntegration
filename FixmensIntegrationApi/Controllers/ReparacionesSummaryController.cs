@@ -1,6 +1,7 @@
 ﻿using FixmensIntegrationApi.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -32,12 +33,12 @@ namespace FixmensIntegrationApi.Controllers
                 //UserToken token = new UserToken(User);
                 serviceEntities model = new serviceEntities();
                 model.Configuration.LazyLoadingEnabled = false;
-                var list = model.REPARACIONESVIEW.Where(x => x.TECNICO.Contains(userName) && x.FECHATERMINADO >= fechaInicio && x.FECHATERMINADO <= fechaFin && (!soloEntregado || x.ENTREGADO.Value)).GroupBy(a => a.FECHATERMINADO).Select(g => new { g.Key.Value, CANTIDAD = g.Count()}).ToList();
+                var list = model.REPARACIONESVIEW.Where(x => x.TECNICO.Contains(userName) && x.FECHATERMINADO >= fechaInicio && x.FECHATERMINADO <= fechaFin && (!soloEntregado || x.ENTREGADO.Value)).GroupBy(a => DbFunctions.TruncateTime(a.FECHATERMINADO.Value)).Select(g => new { g.Key, CANTIDAD = g.Count()}).ToList();
                 List<ReparacionesSummaryDTO> result = new List<ReparacionesSummaryDTO>();
                 foreach(var item in list)
                 {
                     var element = new ReparacionesSummaryDTO();
-                    element.FECHATERMINADO = item.Value;
+                    element.FECHATERMINADO = item.Key.Value;
                     element.CANTIDAD = item.CANTIDAD;
                     result.Add(element);
                 }
