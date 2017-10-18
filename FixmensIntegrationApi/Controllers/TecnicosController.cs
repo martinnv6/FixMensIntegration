@@ -10,7 +10,7 @@ namespace FixmensIntegrationApi.Controllers
     public class TecnicosController : ApiController
     {
 
-        public HttpResponseMessage GetAll()
+        public HttpResponseMessage GetAll(DateTime? fechaInicio,DateTime? fechaFin)
         {
 
             try
@@ -21,7 +21,7 @@ namespace FixmensIntegrationApi.Controllers
                 model.Configuration.LazyLoadingEnabled = false;
                 
 
-                List<string> result = model.REPARACIONESVIEW.Select(x => x.TECNICO).Distinct().ToList();
+                List<string> result = model.REPARACIONESVIEW.Where(y=>(y.FECHATERMINADO >= fechaInicio && y.FECHATERMINADO<= fechaFin) || fechaInicio == null || fechaFin == null).Select(x => x.TECNICO).Distinct().ToList();
 
                 return Request.CreateResponse(HttpStatusCode.OK,
                     result);
