@@ -5,9 +5,11 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using FixmensIntegrationApi.BLL;
+using System.Web.Http.Cors;
 
 namespace FixmensIntegrationApi.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class SmsController : ApiController
     {
         // GET: api/Sms

@@ -205,6 +205,7 @@
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="BLL\InvoicesBLL.cs" />
     <Compile Include="BLL\SmsBLL.cs" />
+    <Compile Include="Controllers\GenericCallBackController.cs" />
     <Compile Include="Controllers\MailInvoicesController.cs" />
     <Compile Include="Controllers\ReparacionesByTecnicoController.cs" />
     <Compile Include="Controllers\ReparacionesController.cs" />
