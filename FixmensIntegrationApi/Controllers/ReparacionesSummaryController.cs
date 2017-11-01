@@ -39,7 +39,7 @@ namespace FixmensIntegrationApi.Controllers
                 {
                     if (user != "" || userName == "")
                     {
-                        var list = model.REPARACIONESVIEW.Where(x => x.TECNICO == user && x.FECHATERMINADO >= fechaInicio && x.FECHATERMINADO <= fechaFin && (!soloEntregado || x.ENTREGADO.Value)).GroupBy(a => DbFunctions.TruncateTime(a.FECHATERMINADO.Value)).Select(g => new ReparacionesSummaryDTO { FECHATERMINADO = g.Key.Value, CANTIDAD = g.Count(), TECNICO = g.FirstOrDefault().TECNICO , GENERADO = g.Sum(c=>long.Parse(c.PRESPUPUESTO))}).ToList();
+                        var list = model.REPARACIONESVIEW.Where(x => x.TECNICO == user && x.FECHATERMINADO >= fechaInicio && x.FECHATERMINADO <= fechaFin && (!soloEntregado || x.ENTREGADO.Value)).GroupBy(a => DbFunctions.TruncateTime(a.FECHATERMINADO.Value)).Select(g => new ReparacionesSummaryDTO { FECHATERMINADO = g.Key.Value, CANTIDAD = g.Count(), TECNICO = g.FirstOrDefault().TECNICO , GENERADO = g.Sum(c=> c.PRESPUPUESTO)}).ToList();
                         result.Add(list);
                     }
                 }

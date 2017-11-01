@@ -26,7 +26,7 @@ namespace FixmensIntegrationApi
         public string FALLA { get; set; }
         public string INFORMETALLER { get; set; }
         public string DETALLE { get; set; }
-        public string PRESPUPUESTO { get; set; }
+        public Nullable<int> PRESPUPUESTO { get; set; }
         public string TECNICO { get; set; }
         public Nullable<System.DateTime> FECHAINGRESO { get; set; }
         public Nullable<System.DateTime> PROMETIDO { get; set; }

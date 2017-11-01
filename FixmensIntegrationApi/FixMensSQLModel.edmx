@@ -15,7 +15,7 @@
           <Property Name="FALLA" Type="varchar(max)" />
           <Property Name="INFORMETALLER" Type="varchar(max)" />
           <Property Name="DETALLE" Type="varchar(max)" />
-          <Property Name="PRESPUPUESTO" Type="varchar(max)" />
+          <Property Name="PRESPUPUESTO" Type="decimal" Precision="18" Scale="0" />
           <Property Name="TECNICO" Type="varchar" MaxLength="100" />
           <Property Name="FECHAINGRESO" Type="datetime" />
           <Property Name="PROMETIDO" Type="datetime" />
@@ -83,7 +83,7 @@
           <Property Name="FALLA" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="INFORMETALLER" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="DETALLE" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="PRESPUPUESTO" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="PRESPUPUESTO" Type="Int32" />
           <Property Name="TECNICO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="FECHAINGRESO" Type="DateTime" Precision="3" />
           <Property Name="PROMETIDO" Type="DateTime" Precision="3" />

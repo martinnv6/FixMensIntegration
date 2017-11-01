@@ -102,7 +102,7 @@ namespace FixmensCMD
                         {
                             var phonesAux = new List<PhoneModel> { phone };
                             bllOrden.SendSMS(ref logAvance, phonesAux,
-                                "---FIXMENS--- Estimado cliente su equipo: " + phone.ReparacionId + " se encuentra en estatus: " + phone.Status + ", consulte el detalle en " + urlOrden + " o al " + telFixens);
+                                "---FIXMENS--- Estimado cliente el informe de su equipo: " + phone.ReparacionId + " fue actualizado, estatus actual: " + phone.Status + ", consulte el detalle en " + urlOrden + " o al " + telFixens);
                             if (phone.Status == "Reparación Terminada")
                             {
                                 bllOrden.SendSMS(ref logAvance, phonesAux,

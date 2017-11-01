@@ -144,7 +144,7 @@ namespace FixmensCMD.BLL
                             INFORMETALLER = row["INFORMETALLER"].ToString(),
                             TECNICO = row["TECNICO"].ToString(),
                             DETALLE = row["DETALLE"].ToString(),
-                            PRESPUPUESTO = string.IsNullOrEmpty(row["PRESUPUESTO"].ToString()) ? "0":row["PRESUPUESTO"].ToString(),//"$" + $"{row["PRESUPUESTO"]:0,0.00}",
+                            PRESPUPUESTO = long.Parse(string.IsNullOrEmpty(row["PRESUPUESTO"].ToString()) ? "0":row["PRESUPUESTO"].ToString()),//"$" + $"{row["PRESUPUESTO"]:0,0.00}",
                             FECHAINGRESO = DateTime.TryParse(row["FECHAINGRESO"].ToString(), out ingreso) && ingreso > dateAux ? ingreso : (DateTime?)null,
                             PROMETIDO = DateTime.TryParse(row["PROMETIDO"].ToString(), out prometido) && prometido > dateAux ? prometido : (DateTime?)null,
                             FECHATERMINADO = DateTime.TryParse(row["FECHATERMINADO"].ToString(), out terminado) && terminado > dateAux ? terminado : (DateTime?)null,
