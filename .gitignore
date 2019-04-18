@@ -39,3 +39,7 @@ Thumbs.db
 # dotCover
 *.dotCover
 /base/service.fdb
+
+# private configfiles 
+connectionStrings.config
+PrivateSettings.config
